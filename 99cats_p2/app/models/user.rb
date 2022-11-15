@@ -1,6 +1,7 @@
 class User < ApplicationRecord
     attr_reader :password
     validates :password, length: { minimum: 6 }, allow_nil: true
+    before_validation :ensure_session_token
 
     def password=(password)
         @password = password
@@ -13,6 +14,7 @@ class User < ApplicationRecord
     end
 
     def self.find_by_credentials(username, password)
+        debugger
         @user = User.find_by(username: username)
         if @user && @user.is_password?(password)
             return @user
